@@ -6,7 +6,7 @@ import plotly.express as px
 # Carregar dados
 @st.cache_data
 def load_data():
-    return pd.read_excel("Prospecção_Unificada_Superbid.xlsx", engine="openpyxl")
+    return pd.read_excel("Prospecção_Unificada_Superbid2.xlsx", engine="openpyxl")
 
 df = load_data()
 
