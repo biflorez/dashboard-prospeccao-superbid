@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import io
 
 # Carregar dados
 @st.cache_data
@@ -46,10 +47,9 @@ if "Receita Estimada (R$)" in filtro.columns:
     filtro["Receita Formatada"] = filtro["Receita Estimada (R$)"].apply(
         lambda x: f"R$ {x:,.0f}".replace(",", ".") if pd.notnull(x) else "N/A"
     )
+    filtro_ordenado = filtro.sort_values(by="Receita Estimada (R$)", ascending=False, na_position="last")
     st.dataframe(
-        filtro.sort_values(by="Receita Estimada (R$)", ascending=False, na_position="last")[
-            ["Empresa", "Setor", "Status", "Receita Formatada"]
-        ],
+        filtro_ordenado[["Empresa", "Setor", "Status", "Receita Formatada", "Receita Estimada (R$)"]],
         use_container_width=True
     )
 else:
