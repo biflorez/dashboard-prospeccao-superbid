@@ -43,9 +43,19 @@ st.subheader("📋 Tabela de Empresas")
 
 if "Receita Estimada (R$)" in filtro.columns:
     filtro["Receita Estimada (R$)"] = pd.to_numeric(filtro["Receita Estimada (R$)"], errors="coerce")
-    st.dataframe(filtro.sort_values(by="Receita Estimada (R$)", ascending=False, na_position="last"), use_container_width=True)
+    filtro["Receita Formatada"] = filtro["Receita Estimada (R$)"].apply(
+        lambda x: f"R$ {x:,.0f}".replace(",", ".") if pd.notnull(x) else "N/A"
+    )
+    st.dataframe(
+        filtro.sort_values(by="Receita Estimada (R$)", ascending=False, na_position="last")[
+            ["Empresa", "Setor", "Status", "Receita Formatada"]
+        ],
+        use_container_width=True
+    )
 else:
     st.dataframe(filtro, use_container_width=True)
 
 # Exportar dados filtrados
-st.download_button("📥 Baixar dados filtrados", filtro.to_excel(index=False), file_name="Prospecao_Filtrada.xlsx")
+output = io.BytesIO()
+filtro.to_excel(output, index=False, engine="openpyxl")
+st.download_button("📥 Baixar dados filtrados", data=output.getvalue(), file_name="Prospecao_Filtrada.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
