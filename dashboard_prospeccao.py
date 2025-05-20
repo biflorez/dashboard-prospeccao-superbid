@@ -22,6 +22,11 @@ if setores:
     filtro = filtro[filtro["Setor"].isin(setores)]
 if status:
     filtro = filtro[filtro["Status"].isin(status)]
+if "Receita Estimada (R$)" in filtro.columns:
+    st.dataframe(filtro.sort_values(by="Receita Estimada (R$)", ascending=False), use_container_width=True)
+else:
+    st.dataframe(filtro, use_container_width=True)
+
 
 # Métricas
 st.metric("Total de Empresas", len(filtro))
