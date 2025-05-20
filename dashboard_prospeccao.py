@@ -42,7 +42,11 @@ with col2:
 
 # Tabela detalhada
 st.subheader("📋 Tabela de Empresas")
-st.dataframe(filtro.sort_values(by="Receita Estimada (R$) ", ascending=False), use_container_width=True)
+if "Receita Estimada (R$)" in filtro.columns:
+    filtro["Receita Estimada (R$)"] = pd.to_numeric(filtro["Receita Estimada (R$)"], errors="coerce")
+    st.dataframe(filtro.sort_values(by="Receita Estimada (R$)", ascending=False, na_position="last"), use_container_width=True)
+else:
+    st.dataframe(filtro, use_container_width=True)
 
 # Exportar dados filtrados
 st.download_button("📥 Baixar dados filtrados", filtro.to_excel(index=False), file_name="Prospecao_Filtrada.xlsx")
