@@ -44,12 +44,12 @@ st.subheader("📋 Tabela de Empresas")
 
 if "Receita Estimada (R$)" in filtro.columns:
     filtro["Receita Estimada (R$)"] = pd.to_numeric(filtro["Receita Estimada (R$)"], errors="coerce")
-    filtro["Receita Formatada"] = filtro["Receita Estimada (R$)"].apply(
+    filtro["Receita 2024"] = filtro["Receita Estimada (R$)"].apply(
         lambda x: f"R$ {x:,.0f}".replace(",", ".") if pd.notnull(x) else "N/A"
     )
     filtro_ordenado = filtro.sort_values(by="Receita Estimada (R$)", ascending=False, na_position="last")
     st.dataframe(
-        filtro_ordenado[["Empresa", "Setor", "Status", "Receita Formatada", "Receita Estimada (R$)"]],
+        filtro_ordenado[["Empresa", "Setor", "Status", "Receita 2024"]],
         use_container_width=True
     )
 else:
